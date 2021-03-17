@@ -143,3 +143,5 @@ export FESTIVALDIR=/home/martin/data/mus/unit_selection_tools/festival
 export FESTIVAL=/home/martin/data/mus/unit_selection_tools/festival/bin/festival
 export MULTISYN_BUILD=/home/martin/data/mus/unit_selection_tools/multisyn_build
 export HTKDIR=/home/martin/data/mus/htk
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
