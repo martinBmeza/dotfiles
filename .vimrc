@@ -1,202 +1,170 @@
-" plugins
-let need_to_install_plugins = 0
-if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    let need_to_install_plugins = 1
-endif
+set nocompatible              " required
+filetype off                  " required
 
-call plug#begin()
-Plug 'tpope/vim-sensible'
-Plug 'itchyny/lightline.vim'
-Plug 'joshdick/onedark.vim'
-Plug 'ap/vim-buftabline'
-Plug 'airblade/vim-gitgutter'
-Plug 'preservim/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'jiangmiao/auto-pairs'
-Plug 'dense-analysis/ale'
-Plug 'majutsushi/tagbar'
-Plug 'vim-scripts/indentpython.vim'
-Plug 'lepture/vim-jinja'
-Plug 'pangloss/vim-javascript'
-Plug 'alvan/vim-closetag'
-Plug 'maxmellon/vim-jsx-pretty'
-call plug#end()
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-filetype plugin indent on
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+"SimplyFold para manejar el agrupamiento de codigo
+Plugin 'tmhedberg/SimpylFold'
+
+"Identación para Python
+Plugin 'vim-scripts/indentpython.vim'
+
+"Autocompletado para python (puede extenderse a mas, revisar) 
+Bundle 'Valloric/YouCompleteMe'
+
+"Chequeo de sintaxis en cada guardado
+Plugin 'vim-syntastic/syntastic'
+
+"Chequeo de cumplimiento de estandar PEP8
+Plugin 'nvie/vim-flake8'
+
+"Tema general chill 
+Plugin 'jnurmine/Zenburn'
+
+"Tema para convulsionar
+Plugin 'tomasr/molokai'
+
+"Explorador de archivos
+Plugin 'scrooloose/nerdtree'
+
+"Tabs
+Plugin 'jistr/vim-nerdtree-tabs'
+
+"Super-buscador. Busca archivos y tags
+Plugin 'kien/ctrlp.vim'
+
+"Tagbar
+Plugin 'majutsushi/tagbar'
+" add all your plugins here (note older versions of Vundle
+" used Bundle instead of Plugin)
+
+" ...
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+
+"Para que no tarde mucho en cambiar de modo 
+set ttimeoutlen=50
+
+
+"Activar los numeros al costado
+set nu
+
+
+"Para que resalte el codigo y se vea cheto
+let python_highlight_all=1
 syntax on
+"colorscheme zenburn temita chill
+colorscheme molokai
 
-if need_to_install_plugins == 1
-    echo "Installing plugins..."
-    silent! PlugInstall
-    echo "Done!"
-    q
-endif
+"Para decidir como hacer el layout. Los splits horizontales se crean abajo
+"y los splits verticales se crean a la derecha
+set splitbelow
+set splitright
 
-" always show the status bar
-set laststatus=2
 
-" enable 256 colors
-set t_Co=256
-set t_ut=
+"DEFINO EL LEADER
+let mapleader=" "
 
-" turn on line numbering
-set number
 
-" sane text files
-set fileformat=unix
-set encoding=utf-8
-set fileencoding=utf-8
+"Split navigation:
+"Para moverme entre los paneles, en modo normal tendria que usar primero
+"la combinacion ctrl+w para pasar a seleccion de ventanas, y luego ctrl+j
+"para ir a la ventana de la izquierda. Para cambiar esto y poder hacerlo
+"con una sola combinacion, agrego la siguientes lineas que hacen un mapeo 
+"(valido para el modo normal, eso indica el nnoremap) de este par de 
+"combinaciones de teclas a una sola combinacion
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 
-" sane editing
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set colorcolumn=80
-set expandtab
-set viminfo='25,\"50,n~/.viminfo
-autocmd FileType html setlocal tabstop=2 shiftwidth=2 softtabstop=2
-autocmd FileType css setlocal tabstop=2 shiftwidth=2 softtabstop=2
-autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
-" auto-pairs
-au FileType python let b:AutoPairs = AutoPairsDefine({"f'" : "'", "r'" : "'", "b'" : "'"})
-
-" word movement
-imap <S-Left> <Esc>bi
-nmap <S-Left> b
-imap <S-Right> <Esc><Right>wi
-nmap <S-Right> w
-
-" indent/unindent with tab/shift-tab
-nmap <Tab> >>
-nmap <S-tab> <<
-imap <S-Tab> <Esc><<i
-vmap <Tab> >gv
-vmap <S-Tab> <gv
-
-" mouse
-set mouse=a
-let g:is_mouse_enabled = 1
-noremap <silent> <Leader>m :call ToggleMouse()<CR>
-function ToggleMouse()
-    if g:is_mouse_enabled == 1
-        echo "Mouse OFF"
-        set mouse=
-        let g:is_mouse_enabled = 0
-    else
-        echo "Mouse ON"
-        set mouse=a
-        let g:is_mouse_enabled = 1
-    endif
-endfunction
-
-" color scheme
-syntax on
-colorscheme onedark
-filetype on
-filetype plugin indent on
-
-" lightline
-set noshowmode
-let g:lightline = { 'colorscheme': 'onedark' }
-
-" code folding
+"Code folding
+"Refiere a la capacidad de las IDEs de trabajar con bloques de código,
+"mostrando por ejemplo solo la definición de una clase en lugar de todo el
+"código que contiene. Para colapsar o cerrar los folds se debe usar
+"la combianción de teclas za. También se puede hacer un mapeo para usar
+"una tecla mas comoda para esto, como la barra espaciadora
+"Enable Folding
 set foldmethod=indent
 set foldlevel=99
+"Enable folding with the spacebar
+nnoremap <space> za
+"La linea set foldmethod=ident refiere a que se va a fijar en la identacion
+"para definir las folds. Esto usualmente genera muchas mas folds de las que
+"creemos necesarias. Para eso se instala un plugin que maneje de mejor 
+"manera el agrupamiento de código. Por ejemplo, SimplyFold.
+"Descomentar la siguiente linea si quiero que al armar un folder se 
+"muestre en esa linea la descripción de la folder armada
+"let g:SimpylFold_docstring_preview=1
 
-" wrap toggle
-setlocal nowrap
-noremap <silent> <Leader>w :call ToggleWrap()<CR>
-function ToggleWrap()
-    if &wrap
-        echo "Wrap OFF"
-        setlocal nowrap
-        set virtualedit=all
-        silent! nunmap <buffer> <Up>
-        silent! nunmap <buffer> <Down>
-        silent! nunmap <buffer> <Home>
-        silent! nunmap <buffer> <End>
-        silent! iunmap <buffer> <Up>
-        silent! iunmap <buffer> <Down>
-        silent! iunmap <buffer> <Home>
-        silent! iunmap <buffer> <End>
-    else
-        echo "Wrap ON"
-        setlocal wrap linebreak nolist
-        set virtualedit=
-        setlocal display+=lastline
-        noremap  <buffer> <silent> <Up>   gk
-        noremap  <buffer> <silent> <Down> gj
-        noremap  <buffer> <silent> <Home> g<Home>
-        noremap  <buffer> <silent> <End>  g<End>
-        inoremap <buffer> <silent> <Up>   <C-o>gk
-        inoremap <buffer> <silent> <Down> <C-o>gj
-        inoremap <buffer> <silent> <Home> <C-o>g<Home>
-        inoremap <buffer> <silent> <End>  <C-o>g<End>
-    endif
-endfunction
 
-" move through split windows
-nmap <leader><Up> :wincmd k<CR>
-nmap <leader><Down> :wincmd j<CR>
-nmap <leader><Left> :wincmd h<CR>
-nmap <leader><Right> :wincmd l<CR>
+"Evitar espacios en blanco
+"La siguiente linea se puede interpretar como una flag para marcar
+"espacios en blanco innecesarios de manera de que sea facil 
+"identificarlos y corregirlos a la hora de escribir codigo
+highlight BadWhitespace ctermbg=red guibg=darkred
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
-" move through buffers
-nmap <leader>[ :bp!<CR>
-nmap <leader>] :bn!<CR>
-nmap <leader>x :bd<CR>
 
-" restore place in file from previous session
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+"Set encoding UTF8 
+"Pido que por defecto se trabaje en codificación UTF8 (Conveniente
+"para python)
+set encoding=utf-8
 
-" file browser
-let NERDTreeIgnore = ['\.pyc$', '__pycache__']
-let NERDTreeMinimalUI = 1
-let g:nerdtree_open = 0
-map <leader>n :call NERDTreeToggle()<CR>
-function NERDTreeToggle()
-    NERDTreeTabsToggle
-    if g:nerdtree_open == 1
-        let g:nerdtree_open = 0
-    else
-        let g:nerdtree_open = 1
-        wincmd p
-    endif
-endfunction
 
-function! StartUp()
-    if 0 == argc()
-        NERDTree
-    end
-endfunction
-autocmd VimEnter * call StartUp()
+"Configuraciones de YOUCOMPLETEME
+"Primero agrego una configuración para que la ventana de autocompletado 
+"se cierre una vez que termine de escribir. La segunda linea define un
+"shortcut para ir a la definición. 
+let g:ycm_autoclose_preview_window_after_completion=1
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-" ale
-map <C-e> <Plug>(ale_next_wrap)
-map <C-r> <Plug>(ale_previous_wrap)
 
-" tags
-map <leader>t :TagbarToggle<CR>
 
-" copy, cut and paste
-vmap <C-c> "+y
-vmap <C-x> "+c
-vmap <C-v> c<ESC>"+p
-imap <C-v> <ESC>"+pa
+"Python virtualenv support
+"El siguiente bloque de código cumple la función de integrar a vim 
+"los elementos necesarios para poder trabajar con los environments
+"de python de manera adecuada, de manera de que si por ejemplo se 
+"utiliza la función para ir a una definición, el buscador muestre
+"el archivo que corresponda al environment actualemente en uso y no 
+"otra versión. El codigo determina si estas usando un environment
+"y de acuerdo a eso modifica los paths necesarios.
+python3 << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
 
-" disable autoindent when pasting text
-" source: https://coderwall.com/p/if9mda/automatically-set-paste-mode-in-vim-when-pasting-in-insert-mode
-let &t_SI .= "\<Esc>[?2004h"
-let &t_EI .= "\<Esc>[?2004l"
 
-function! XTermPasteBegin()
-    set pastetoggle=<Esc>[201~
-    set paste
-    return ""
-endfunction
+"Tagbar configuracion
+"Mapeto al toggle display al F4
+map <F4> :TagbarToggle<CR>
+" autofocus on tagbar open
+" let g:tagbar_autofocus = 1
 
-inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+"NERDTree configuracion
+"Mapeo al toggle display F3
+map <F3> :NERDTreeToggle<CR>
+"Abrir nerdtree con el archivo actual seleccionado
+nmap ,t :NERDTreeFind<CR>
+"Ignorar algunos tipos de archivo
+let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
+
+
+
