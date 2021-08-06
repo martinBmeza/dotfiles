@@ -57,9 +57,11 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='\w\$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -131,17 +133,3 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-#ENVIRONMENT VARIABLES DE LA INSTALACION DE GITHUB
-#export ESTDIR=/home/martin/Documents/practica_profesional_HIBA/CMU_Festvox_Project/speech_tools
-#export FESTVOXDIR=/home/martin/Documents/practica_profesional_HIBA/CMU_Festvox_Project/festvox
-#export FESTIVALDIR=/home/martin/Documents/practica_profesional_HIBA/CMU_Festvox_Project/festival
-#export SPTKDIR=/home/martin/Documents/practica_profesional_HIBA/CMU_Festvox_Project/SPTK
-
-#ENVIRONMENT VARIABLES DE LA INSTALACION DE MULSTISYN
-export ESTDIR=/home/martin/data/mus/unit_selection_tools/speech_tools
-export FESTIVALDIR=/home/martin/data/mus/unit_selection_tools/festival
-export FESTIVAL=/home/martin/data/mus/unit_selection_tools/festival/bin/festival
-export MULTISYN_BUILD=/home/martin/data/mus/unit_selection_tools/multisyn_build
-export HTKDIR=/home/martin/data/mus/htk
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash

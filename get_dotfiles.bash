@@ -2,6 +2,6 @@
 
 echo "Getting dotfiles from user"
 
-cp ~/.vimrc ~/.bashrc ~/.festivalrc ~/dotfiles/ 
+cp ~/.vimrc ~/.bashrc ~/dotfiles/ 
 
 echo "Done"
