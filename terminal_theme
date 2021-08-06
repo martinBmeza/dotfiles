@@ -1,5 +1,0 @@
-# Dentro del sistema que quiero guardar
-gconftool-2 --dump '/apps/gnome-terminal' > gnome-terminal-conf.xml
-
-# En las maquinas donde lo quiero replicar
-gconftool-2 --load gnome-terminal-conf.xml
