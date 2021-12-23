@@ -29,3 +29,18 @@ set backspace=indent,eol,start
 
 colorscheme badwolf
 set display+=lastline
+
+" f5 to remove trailing blank space
+nnoremap <silent> <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
+
+" relative number
+set relativenumber
+
+" delay time
+set timeoutlen=1000
+set ttimeoutlen=50
+
+" for C code
+set autoindent
+set cindent
+set shiftwidth=4
